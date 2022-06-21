@@ -33,44 +33,49 @@ def send(_key):
 
     if clear_result: #previous key was "="
         #handle various special cases
-        if _key == "=": 
-            #repeat op with r as x and y is the same y 
-            if op == None or disp.text == "": 
+        if disp.text == "ERR": 
+                print("CLEAR RESULT on " + _key)
+                clear()
+                clear_result = False
+        else:
+            if _key == "=": 
+                #repeat op with r as x and y is the same y 
+                if op == None or disp.text == "": 
+                    return
+                logger.text = sstr(x)+" "+op+" "+sstr(y)+" ="
+                calc_result()
+                disp.text = sstr(r)
                 return
-            logger.text = sstr(x)+" "+op+" "+sstr(y)+" ="
-            calc_result()
-            disp.text = sstr(r)
-            return
-        if _key == "+/−":
-            if disp.text[0] == '−': #minus character
-                disp.text = disp.text[1:]
-            else:
-                disp.text = '−' + disp.text
-            r = 0 - r
-            x = r
-            logger.text = sstr(x)
-            return   
-        if _key == "⌫": 
-            disp.text = disp.text[:-1]
-            r = ffloat(disp.text)
-            x = r
-            logger.text = disp.text
-            return
-            #in each case above, clear_result remains True
+            if _key == "+/−":
+                if disp.text[0] == '−': #minus character
+                    disp.text = disp.text[1:]
+                else:
+                    disp.text = '−' + disp.text
+                r = 0 - r
+                x = r
+                logger.text = sstr(x)
+                return   
+            if _key == "⌫": 
+                disp.text = disp.text[:-1]
+                r = ffloat(disp.text)
+                x = r
+                logger.text = disp.text
+                return
+                #generally for cases above, clear_result remains True 
         
-        clear_result = False    
-        
-        if _key in operators:
-            #keep taking input
-            op = _key
-            logger.text = sstr(x)+" "+op
-            disp.text = ""
-            return
-        if _key in digits or _key == ".":
-            #clear everything then process the key below
-            print("CLEAR RESULT on " + _key)
-            clear()
-            return
+            clear_result = False    
+            
+            if _key in operators:
+                #keep taking input
+                op = _key
+                logger.text = sstr(x)+" "+op
+                disp.text = ""
+                return
+            if _key in digits or _key == ".":
+                #clear everything then process the key below
+                print("CLEAR RESULT on " + _key)
+                clear()
+                return
             
     #thats all the special cases for clear_result
     #so these are the normal cases
